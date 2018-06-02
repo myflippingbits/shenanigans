@@ -17,8 +17,10 @@ function dirCrawler(directory) {
                 let stats = fs.statSync(folder);
                 if (stats.isDirectory()) {
                     fileCrawler(folder);
+                    //console.log("its a directory " + folder);
                 } else
                     fileLogger(folder);
+                //console.log("its a file " + folder);
             }
         }
     });
@@ -27,13 +29,15 @@ function dirCrawler(directory) {
 function fileCrawler(fullDirectory) {
     fs.readdir(fullDirectory, function(err, files) {
         if (err) console.log('Error', err);
-
-        let stats = fss.statSync(fullDirectory);
-        if (stats.isDirectory()) {
-            fileCrawler(fullDirectory);
-        } else {
-            for (n = 0; n < files.length; n++) {
-                fileLogger(fullDirectory, files[n]);
+        else {
+            for (i = 0; i < files.length; i++) {
+                let filePath = fullDirectory + "\\" + files[i];
+                let stats = fss.statSync(filePath);
+                if (stats.isDirectory()) {
+                    fileCrawler(filePath);
+                } else {
+                    fileLogger(fullDirectory, files[i]);
+                }
             }
         }
     });
@@ -50,7 +54,6 @@ function fileLogger(directory, file) {
     data.size = stats['size'];
     console.log(data);
 }
-
 
 /*
 for (i = 0; i < fulldirectory.length; i++) {
@@ -70,13 +73,6 @@ for (i = 0; i < fulldirectory.length; i++) {
     });
 }*/
 
-
-
-
-
 dirCrawler(monitored_directories[0]);
 
-//fileCrawler(dirstructure_array[0]);
-
-
-//for loop going through dirstructure_array and calling fileCrawler for each path.
+//fileCrawler('L:\\Movies\\J');
