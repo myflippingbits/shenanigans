@@ -45,6 +45,7 @@ function fileCrawler(fullDirectory) {
 
 function fileLogger(directory, file) {
     let data = {};
+    data.timestamp = Date.now();
     data.drive = directory.slice(0, 1);
     data.folder = directory;
     data.filePath = directory + "\\" + file;
@@ -52,6 +53,9 @@ function fileLogger(directory, file) {
     data.file = file;
     let stats = fss.statSync(data.filePath);
     data.size = stats['size'];
+    data.created = stats['ctimeMs'];
+    data.accessed = stats['atimeMs'];
+    data.modified = stats['mtimeMs'];
     console.log(data);
 }
 
