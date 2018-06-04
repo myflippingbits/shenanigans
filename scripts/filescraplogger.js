@@ -1,6 +1,6 @@
 const fs = require('fs');
 fss = fs;
-var json = JSON.parse(require('fs').readFileSync('config.json', 'utf8'));
+var json = JSON.parse(require('fs').readFileSync('config.json', 'utf8')); //format is {"monitored_directories": ["directory_path1","directory_path2"]}
 monitored_directories = json.monitored_directories;
 
 function dirCrawler(directory) {
@@ -38,7 +38,7 @@ function fileLogger(directory, file) {
 }
 
 function logForSplunk(data) {
-    fs.appendFile('file_entries.txt', JSON.stringify(data) + "\n", function(err) {
+    fs.appendFile('S:\\LogsForSplunk\\fileInfo\\file_entries.txt', JSON.stringify(data) + "\n", function(err) {
         if (err) throw 'Error writing entry to file' + err;
     });
 }
