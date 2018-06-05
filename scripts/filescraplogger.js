@@ -5,13 +5,13 @@ monitored_directories = json.monitored_directories;
 var file_date = Date().toLocaleString().slice(4, 24).replace(/\s|:/g, "_");
 
 function dirCrawler(directory) {
-    readdir(directory, function(err, child) {
+    fs.readdir(directory, function(err, child) {
         if (err) console.log("Error in dirCrawler", err);
         else {
             for (i = 0; i < child.length; i++) {
                 let filePath = directory + "\\" + child[i];
                 filePath.replace(/\/\//g, "/");
-                let stats = statSync(filePath);
+                let stats = fss.statSync(filePath);
                 if (stats.isDirectory()) {
                     dirCrawler(filePath);
                 } else
@@ -40,7 +40,7 @@ function fileLogger(directory, file) {
 
 function logForSplunk(data) {
 
-    appendFile("S:\\LogsForSplunk\\fileInfo\\file_entries_" + file_date + ".txt", JSON.stringify(data) + "\n", function(err) {
+    fs.appendFile("S:\\LogsForSplunk\\fileInfo\\file_entries_" + file_date + ".txt", JSON.stringify(data) + "\n", function(err) {
         if (err) throw "Error writing entry to file" + err;
     });
 }
