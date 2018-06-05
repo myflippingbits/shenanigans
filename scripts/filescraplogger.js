@@ -1,16 +1,17 @@
-const fs = require('fs');
+const fs = require("fs");
 fss = fs;
-var json = JSON.parse(require('fs').readFileSync('config.json', 'utf8')); //format is {"monitored_directories": ["directory_path1","directory_path2"]}
+var json = JSON.parse(require("fs").readFileSync("config.json", "utf8")); //format is {"monitored_directories": ["directory_path1","directory_path2"]}
 monitored_directories = json.monitored_directories;
+var file_date = Date().toLocaleString().slice(4, 24).replace(/\s|:/g, "_");
 
 function dirCrawler(directory) {
-    fs.readdir(directory, function(err, child) {
-        if (err) console.log('Error in dirCrawler', err);
+    readdir(directory, function(err, child) {
+        if (err) console.log("Error in dirCrawler", err);
         else {
             for (i = 0; i < child.length; i++) {
                 let filePath = directory + "\\" + child[i];
                 filePath.replace(/\/\//g, "/");
-                let stats = fs.statSync(filePath);
+                let stats = statSync(filePath);
                 if (stats.isDirectory()) {
                     dirCrawler(filePath);
                 } else
@@ -38,8 +39,9 @@ function fileLogger(directory, file) {
 }
 
 function logForSplunk(data) {
-    fs.appendFile('S:\\LogsForSplunk\\fileInfo\\file_entries.txt', JSON.stringify(data) + "\n", function(err) {
-        if (err) throw 'Error writing entry to file' + err;
+
+    appendFile("S:\\LogsForSplunk\\fileInfo\\file_entries_" + file_date + ".txt", JSON.stringify(data) + "\n", function(err) {
+        if (err) throw "Error writing entry to file" + err;
     });
 }
 
