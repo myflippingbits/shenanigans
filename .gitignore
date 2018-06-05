@@ -2,3 +2,5 @@ package-lock.json
 .vscode
 node_modules
 config.json
+.eslintrc.json
+package.json
