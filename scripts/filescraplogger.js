@@ -2,7 +2,7 @@ const fs = require("fs");
 var fss = fs;
 var json = JSON.parse(require("fs").readFileSync("config.json", "utf8")); //format is {"monitored_directories": ["directory_path1","directory_path2"]}
 var monitored_directories = json.monitored_directories;
-var file_date = Date().toLocaleString().slice(4, 24).replace(/\s|:/g, "_");
+var file_date = Date().toLocaleString().slice(4, 21).replace(/\s|:/g, "_");
 
 function dirCrawler(directory) {
     fs.readdir(directory, function(err, child) {
