@@ -5,6 +5,15 @@ Generate ssh key:
 ssh-keygen -t rsa -C "your_email@example.com"
 ```
 Copy the contents of the file ~/.ssh/id_rsa.pub to your SSH keys in your GitHub account settings.
+
+start agent
+```
+eval $(ssh-agent)
+
+add your keys
+```
+ssh-add /path/to/key-A
+
 Test SSH key:
 ```
 ssh -T git@github.com
