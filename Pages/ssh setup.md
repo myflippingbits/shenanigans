@@ -12,7 +12,7 @@ eval $(ssh-agent)
 
 add your keys
 ```
-ssh-add /path/to/key-A
+ssh-add ~/.ssh/id_rsa
 
 Test SSH key:
 ```
