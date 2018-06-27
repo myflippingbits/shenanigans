@@ -1,5 +1,5 @@
 const http = require("http");
-const logToSplunk = require('./postToSplunk');
+const logToSplunk = require('./sendToSplunk');
 
 
 var options = {
@@ -19,6 +19,6 @@ http.request(options, function(res) {
     res.on("end", function() {
         var price = JSON.parse(body);
         console.log(price);
-        logToSplunk(price);
+        logToSplunk(price, "File");
     });
 }).end();
