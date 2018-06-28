@@ -9,16 +9,21 @@ var options = {
     method: "GET"
 };
 
-http.request(options, function(res) {
-    var body = "";
 
-    res.on("data", function(data) {
-        body += data;
-    });
+function fetchAPIAndLogData(options) {
+    http.request(options, function(res) {
+        var body = "";
 
-    res.on("end", function() {
-        var price = JSON.parse(body);
-        console.log(price);
-        logToSplunk(price, "File");
-    });
-}).end();
+        res.on("data", function(data) {
+            body += data;
+        });
+
+        res.on("end", function() {
+            var JSONData = JSON.parse(body);
+            console.log(JSONData);
+            logToSplunk(JSONData, "HTTP");
+        });
+    }).end();
+}
+
+fetchAPIAndLogData(options);
