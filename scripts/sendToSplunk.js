@@ -3,14 +3,36 @@ const fs = require("fs");
 var file_date = Date().toLocaleString().slice(4, 21).replace(/\s|:/g, "_");
 //var date = Date.now();
 
-module.exports = function(data, where) {
-    if (where == "HTTP") {
-        // Build the post string from an object
-        var post_data = JSON.stringify({
-            "index": "crypto",
-            "host": "SplunkLogger",
-            "event": data
-        });
+//http://dev.splunk.com/view/event-collector/SP-CAAAE6P
+//Data format example
+// {
+//     "time": 1426279439, // epoch time
+//     "host": "localhost",
+//     "source": "datasource",
+//     "index": "txt",
+//     "index": "main",
+//     "event": { "Hello world!" }
+// }
+
+module.exports = function(data, how, destination) {
+    if (how == "HTTP") {
+        var index, post_data;
+
+        if (destination == "crypto") {
+            index = "Splunk 39EF2F0F-BCFD-47BA-B3B6-D7EE3B11C024";
+            post_data = JSON.stringify({
+                "index": "crypto",
+                "host": "SplunkLogger",
+                "event": data
+            });
+        } else if (destination == "plex") {
+            index = "Splunk 6014D059-23DB-42F0-83E5-1DFF4223EDCC";
+            post_data = JSON.stringify({
+                "index": "plex",
+                "host": "SplunkLogger",
+                "event": data
+            });
+        }
 
         // An object of options to indicate where to post to
         var post_options = {
@@ -21,7 +43,7 @@ module.exports = function(data, where) {
             headers: {
                 'Content-Type': 'text/json',
                 'Content-Length': post_data.length,
-                'Authorization': "Splunk 39EF2F0F-BCFD-47BA-B3B6-D7EE3B11C024"
+                'Authorization': index
             }
         };
 
@@ -36,7 +58,7 @@ module.exports = function(data, where) {
         // post the data
         post_req.write(post_data);
         post_req.end();
-    } else if (where == "File") {
+    } else if (how == "File") {
         fs.appendFile("S:\\LogsForSplunk\\fileInfo\\file_entries_" + file_date + ".txt", JSON.stringify(data) + "\n", function(err) {
             if (err) throw "Error writing entry to file" + err;
         });
