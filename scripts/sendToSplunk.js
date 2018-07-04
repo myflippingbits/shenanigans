@@ -8,10 +8,9 @@ var file_date = Date().toLocaleString().slice(4, 21).replace(/\s|:/g, "_");
 // {
 //     "time": 1426279439, // epoch time
 //     "host": "localhost",
-//     "source": "datasource",
-//     "index": "txt",
+//     "source": "SplunkLogger",
 //     "index": "main",
-//     "event": { "Hello world!" }
+//     "event": {"text": "Hello world!"}
 // }
 
 module.exports = function(data, how, destination) {
