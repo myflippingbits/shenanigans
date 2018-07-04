@@ -1,13 +1,12 @@
-//This webhook listener is soley built to be a wrapper to send data to a splunk http event collector by rewrapping it.
+//This webhook listener is soley built to be a wrapper for plex to splunk to send data to a splunk http event collector by rewrapping it.
 var express = require('express'),
     multer = require('multer'),
     logToSplunk = require('./sendToSplunk'),
     app = express(),
-    upload = multer({ storage: multer.memoryStorage() }),
+    upload = multer({ storage: multer.memoryStorage() }), //upload = multer({ dest: '/tmp/' }),
     logMode = "HTTP",
-    splunkLogDestination = "plex";
-//upload = multer({ dest: '/tmp/' }),
-port = 9000;
+    splunkLogDestination = "plex",
+    port = 9000;
 
 app.post('/', upload.single('thumb'), function(req, res) {
     var payload = JSON.parse(req.body.payload);
@@ -21,18 +20,12 @@ app.post('/', upload.single('thumb'), function(req, res) {
 });
 
 var server = app.listen(port, function() {
-
     var host = server.address().address;
     var port = server.address().port;
-
     console.log('Example app listening at http://%s:%s', host, port)
-
 });
 
-
-
-
-// var app = require('http').createServer(handler);
+// var app = require('http').createServer(handler);   Alternative server but couldnt handle multi-part payloads.
 // var statusCode = 200;
 
 // app.listen(9000);
