@@ -1,4 +1,5 @@
 const http = require("http");
+const cron = require("node-cron");
 const logToSplunk = require('./sendToSplunk');
 
 //Method to log to splunk via.
@@ -53,4 +54,14 @@ function fetchAPIAndLogData(options) {
     }).end();
 }
 
-fetchAPIAndLogData(getticker);
+cron.schedule("*/5 * * * *", function() { //Every 5 mins
+    fetchAPIAndLogData(getticker);
+});
+
+//To-Do:
+// -web hook listener to receive commands on what to buy and sell and increase monitoring tempo
+// -buy handler
+// -sell handler
+// -add token to monitor
+// -remove token from monitor
+// -tempo maintainer per token
