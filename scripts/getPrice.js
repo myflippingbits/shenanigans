@@ -65,3 +65,4 @@ cron.schedule("*/5 * * * *", function() { //Every 5 mins
 // -add token to monitor
 // -remove token from monitor
 // -tempo maintainer per token
+// -interject meta such as which token is the price data for into the json before its sent to splunk
