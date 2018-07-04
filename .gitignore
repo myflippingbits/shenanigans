@@ -6,3 +6,5 @@ config.json
 package.json
 .jsbeautifyrc
 notes.txt
+scripts/scheduler.js
+scripts/slack_push.js
