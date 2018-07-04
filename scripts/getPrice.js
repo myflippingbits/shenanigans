@@ -34,7 +34,7 @@ function site(site) {
         path: site,
         method: "GET"
     };
-    return options
+    return options;
 }
 
 function fetchAPIAndLogData(options) {
