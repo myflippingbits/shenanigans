@@ -10,7 +10,7 @@ var splunkLogDestination = "crypto";
 //Public APIs
 var getmarkets = site("/api/v1.1/public/getmarkets"); //no args
 var getcurrencies = site("/api/v1.1/public/getcurrencies"); //no args
-//var getticker = site("/api/v1.1/public/getticker?market=BTC-LTC");
+var getticker = site("/api/v1.1/public/getticker", "Yes", "BTC-LTC");
 var getmarketsummaries = site("/api/v1.1/public/getmarketsummaries"); //no args
 var getmarketsummary = site("/api/v1.1/public/getmarketsummary?market=BTC-LTC");
 var getorderbook = site("/api/v1.1/public/getorderbook?market=BTC-LTC&type=both"); //could be buy, sell or both
@@ -43,53 +43,49 @@ var getorderhistory = site("/api/v1.1/account/getorderhistory?market=BTC-LTC");
 //     }
 // }
 
-var getticker = site("/api/v1.1/public/getticker", "Yes", "BTC-LTC");
-
 function site(uri, hasOptions, market, apiKey, uuid, type, quantity, rate) {
-    this.data = {};
-    this.data.site = uri;
+    data = {};
+    data.site = uri;
 
     if (hasOptions == "Yes") {
-        this.data.site += "?";
+        data.site += "?";
         if (market) {
-            this.data.market = market; //"BTC-LTC"
-            this.data.currency = market.split("-")[1];
-            this.data.site += `market=${market}&`;
+            data.market = market; //"BTC-LTC"
+            data.currency = market.split("-")[1];
+            data.site += `market=${market}&`;
         }
 
         if (apiKey) {
-            this.data.apikey = apiKey; //"API_KEY"
-            this.data.site += `apikey=${apkiKey}&`;
+            data.apikey = apiKey; //"API_KEY"
+            data.site += `apikey=${apkiKey}&`;
         }
 
         if (uuid) {
-            this.data.uuid = uuid; //"0cb4c4e4-bdc7-4e13-8c13-430e587d2cc1"
-            this.data.site += `uuid=${uuid}&`;
+            data.uuid = uuid; //"0cb4c4e4-bdc7-4e13-8c13-430e587d2cc1"
+            data.site += `uuid=${uuid}&`;
         }
 
         if (type) {
-            this.data.type = "both"; //ie "both"|"sell"|"buy"
-            this.data.site += `type=${type}&`;
+            data.type = "both"; //ie "both"|"sell"|"buy"
+            data.site += `type=${type}&`;
         }
 
         if (quantity && rate) {
-            this.data.quantity = quantity; //ie "1.2"
-            this.data.rate = rate; //ie "1.3"
-            this.data.site += `quantity=${quantity}&rate=${rate}&`;
+            data.quantity = quantity; //ie "1.2"
+            data.rate = rate; //ie "1.3"
+            data.site += `quantity=${quantity}&rate=${rate}&`;
         }
 
-        this.data.site = this.data.site.slice(0, -1);
+        data.site = data.site.slice(0, -1);
     }
-    this.data.options = {
+    data.options = {
         host: "bittrex.com",
         port: 443,
-        path: this.data.site,
+        path: data.site,
         method: "GET"
     };
-    return this.data;
+    return data;
 }
-
-
 
 function fetchAPIAndLogData(apiRequest) {
     https.request(apiRequest.options, function(res) {
