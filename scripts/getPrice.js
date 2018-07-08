@@ -13,7 +13,7 @@ var getcurrencies = site("/api/v1.1/public/getcurrencies"); //no args
 var getticker = site("/api/v1.1/public/getticker", "Yes", "BTC-LTC");
 var getmarketsummaries = site("/api/v1.1/public/getmarketsummaries"); //no args
 var getmarketsummary = site("/api/v1.1/public/getmarketsummary?market=BTC-LTC");
-var getorderbook = site("/api/v1.1/public/getorderbook?market=BTC-LTC&type=both"); //could be buy, sell or both
+var getorderbook = site("/api/v1.1/public/getorderbook", "Yes", "BTC-LTC", "", "", "both"); //could be buy, sell or both
 var getmarkethistory = site("/api/v1.1/public/getmarkethistory?market=BTC-DOGE");
 
 //Market APIs
@@ -43,16 +43,22 @@ var getorderhistory = site("/api/v1.1/account/getorderhistory?market=BTC-LTC");
 //     }
 // }
 
-function site(uri, hasOptions, market, apiKey, uuid, type, quantity, rate) {
+function site(uri, hasOptions, market, apiKey, uuid, type, quantity, rate, currency) {
     data = {};
+    data.api = uri.split("/").slice(-1).toString();
     data.site = uri;
 
     if (hasOptions == "Yes") {
         data.site += "?";
         if (market) {
             data.market = market; //"BTC-LTC"
-            data.currency = market.split("-")[1];
+            data.currency = market.split("-").slice(-1).toString();
             data.site += `market=${market}&`;
+        }
+
+        if (currency) {
+            data.currency = currency; //"LTC"
+            data.site += `currency=${currency}&`;
         }
 
         if (apiKey) {
