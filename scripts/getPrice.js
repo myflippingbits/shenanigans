@@ -121,4 +121,4 @@ fetchAPIAndLogData(getticker);
 // -add token to monitor
 // -remove token from monitor
 // -tempo maintainer per token
-// -interject meta such as which token is the price data for into the json before its sent to splunk
+// done-interject meta such as which token is the price data for into the json before its sent to splunk
