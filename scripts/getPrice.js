@@ -1,4 +1,4 @@
-const http = require("http");
+const https = require("https");
 const cron = require("node-cron");
 const logToSplunk = require('./sendToSplunk');
 
@@ -28,26 +28,43 @@ var getbalance = site("/api/v1.1/account/getbalance?apikey=API_KEY&currency=BTC"
 var getorder = site("/api/v1.1/account/getorder&uuid=0cb4c4e4-bdc7-4e13-8c13-430e587d2cc1");
 var getorderhistory = site("/api/v1.1/account/getorderhistory ?market=BTC-LTC");
 
+var tokens = [];
+
+function handleToken(action, token, schedule) {
+    if (action == "add") {
+        let newToken = { token: { "schedule": schedule } };
+        tokens.push(newToken);
+    } else if (action == "remove") {
+        let newToken = { token: { "schedule": schedule } };
+        var index = tokens.indexOf(token);
+        if (index > -1) {
+            tokens.splice(index, 1);
+        }
+    }
+}
+
 function site(site) {
-    var options = {
+    let options = {
         host: "bittrex.com",
-        port: 80,
+        port: 443,
         path: site,
         method: "GET"
     };
     return options;
 }
 
+
+
 function fetchAPIAndLogData(options) {
-    http.request(options, function(res) {
-        var body = "";
+    https.request(options, function(res) {
+        let body = "";
 
         res.on("data", function(data) {
             body += data;
         });
 
         res.on("end", function() {
-            var JSONData = JSON.parse(body);
+            let JSONData = JSON.parse(body);
             console.log(JSONData);
             logToSplunk(JSONData, logMode, splunkLogDestination);
         });
