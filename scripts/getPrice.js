@@ -124,4 +124,5 @@ fetchAPIAndLogData(getticker);
 // -add token to monitor
 // -remove token from monitor
 // -tempo maintainer per token
+// -add slack intergration.
 // done-interject meta such as which token is the price data for into the json before its sent to splunk
