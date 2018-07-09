@@ -90,6 +90,7 @@ function site(uri, hasOptions, market, apiKey, uuid, type, quantity, rate, curre
         path: data.site,
         method: "GET"
     };
+    delete data.site;
     return data;
 }
 
