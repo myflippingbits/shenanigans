@@ -31,10 +31,10 @@ var getorderhistory = site("/api/v1.1/account/getorderhistory?market=BTC-LTC");
 // var tokens = [];
 
 // function handleToken(action, token, schedule) {
-//     if (action == "add") {
+//     if (action === "add") {
 //         let newToken = { token: { "schedule": schedule } };
 //         tokens.push(newToken);
-//     } else if (action == "remove") {
+//     } else if (action === "remove") {
 //         let newToken = { token: { "schedule": schedule } };
 //         var index = tokens.indexOf(token);
 //         if (index > -1) {
@@ -48,7 +48,7 @@ function site(uri, hasOptions, market, apiKey, uuid, type, quantity, rate, curre
     data.api = uri.split("/").slice(-1).toString();
     data.site = uri;
 
-    if (hasOptions == "Yes") {
+    if (hasOptions === "Yes") {
         data.site += "?";
         if (market) {
             data.market = market; //"BTC-LTC"
