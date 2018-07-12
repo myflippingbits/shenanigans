@@ -28,20 +28,25 @@ var getbalance = site("/api/v1.1/account/getbalance?apikey=API_KEY&currency=BTC"
 var getorder = site("/api/v1.1/account/getorder&uuid=0cb4c4e4-bdc7-4e13-8c13-430e587d2cc1");
 var getorderhistory = site("/api/v1.1/account/getorderhistory?market=BTC-LTC");
 
-// var tokens = [];
+var tokens = [];
 
-// function handleToken(action, token, schedule) {
-//     if (action === "add") {
-//         let newToken = { token: { "schedule": schedule } };
-//         tokens.push(newToken);
-//     } else if (action === "remove") {
-//         let newToken = { token: { "schedule": schedule } };
-//         var index = tokens.indexOf(token);
-//         if (index > -1) {
-//             tokens.splice(index, 1);
-//         }
-//     }
-// }
+function tokenCommand(command, token, schedule) {
+    if (command === "add") {
+        let newToken = '{ "' + token + '": { "schedule": "' + schedule + '" } }';
+        tokens.push(newToken);
+    } else if (command === "remove") {
+        for (let i = 0; i < tokens.length; i++) {
+            if (typeof tokens[i][token] != "undefined") {
+                if (i > -1)
+                    tokens.splice(i, 1);
+            }
+        }
+    } else if (command === "buy") {
+        //some magic sauce
+    } else if (command === "sell") {
+        //more magic sauce
+    }
+}
 
 function site(uri, hasOptions, market, apiKey, uuid, type, quantity, rate, currency) {
     data = {};
@@ -117,12 +122,12 @@ function fetchAPIAndLogData(apiRequest) {
 
 fetchAPIAndLogData(getticker);
 
-//To-Do:
-// -web hook listener to receive commands on what to buy and sell and increase monitoring tempo
-// -buy handler
-// -sell handler
+//To-Do (in order by priority):
 // -add token to monitor
+// -web hook listener to receive commands. such as buy, sell, add, increase monitoring tempo
 // -remove token from monitor
 // -tempo maintainer per token
-// -add slack intergration.
+// -buy handler
+// -sell handler
+// -add slack intergration. but when should it trigger a slack notification for large price movement?
 // done-interject meta such as which token is the price data for into the json before its sent to splunk
