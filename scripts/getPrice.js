@@ -28,23 +28,35 @@ var getbalance = site("/api/v1.1/account/getbalance?apikey=API_KEY&currency=BTC"
 var getorder = site("/api/v1.1/account/getorder&uuid=0cb4c4e4-bdc7-4e13-8c13-430e587d2cc1");
 var getorderhistory = site("/api/v1.1/account/getorderhistory?market=BTC-LTC");
 
-var tokens = [];
+var tokenCollection = [];
 
 function tokenCommand(command, token, schedule) {
     if (command === "add") {
         let newToken = '{ "' + token + '": { "schedule": "' + schedule + '" } }';
-        tokens.push(newToken);
+        tokenCollection.push(newToken);
     } else if (command === "remove") {
-        for (let i = 0; i < tokens.length; i++) {
-            if (typeof tokens[i][token] != "undefined") {
+        for (let i = 0; i < tokenCollection.length; i++) {
+            if (typeof tokenCollection[i][token] != "undefined") {
                 if (i > -1)
-                    tokens.splice(i, 1);
+                    tokenCollection.splice(i, 1);
             }
         }
     } else if (command === "buy") {
         //some magic sauce
+        //check BTC and ETC balance
+        //determine how much should be bought either min default 5% or specified amount in dollars
+        //  - future feature should be to check if price movement is too fast or if buy/ sell wall on the order book is being manipulated. if so cancel buy and log to splunk.
+        //check price of new token
+        //calc amount to be bought
+        //buy new token
     } else if (command === "sell") {
         //more magic sauce
+        //check the balance of the coin to be sold
+        //determine how much should be sold either min default 5% or specified amount in dollars
+        //  - future feature should be to check if price movement is too fast or if buy/ sell wall on the order book is being manipulated. if so cancel sell and log to splunk.
+        //check price of new token
+        //calc amount to be sold
+        //buy new token
     }
 }
 
