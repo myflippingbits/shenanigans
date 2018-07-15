@@ -34,6 +34,7 @@ function tokenCommand(command, token, schedule) {
     if (command === "add") {
         let newToken = '{ "' + token + '": { "schedule": "' + schedule + '" } }';
         tokenCollection.push(newToken);
+        console.log(tokenCollection);
     } else if (command === "remove") {
         for (let i = 0; i < tokenCollection.length; i++) {
             if (typeof tokenCollection[i][token] != "undefined") {
@@ -41,6 +42,7 @@ function tokenCommand(command, token, schedule) {
                     tokenCollection.splice(i, 1);
             }
         }
+        console.log(tokenCollection);
     } else if (command === "buy") {
         //some magic sauce
         //check BTC and ETC balance
