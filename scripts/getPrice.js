@@ -2,9 +2,34 @@ const https = require("https");
 const cron = require("node-cron");
 const logToSplunk = require('./sendToSplunk');
 
+const app = require('http').createServer(handler);
+const statusCode = 200;
+
+app.listen(9001);
+
+function handler(req, res) {
+    var data = '';
+
+    if (req.method == "POST") {
+        req.on('data', function(chunk) {
+            data += chunk;
+        });
+
+        req.on('end', function() {
+            console.log('Received body data:', data.toString());
+            //data parsing to run commands let data = JSON.parse(data);
+            let data2 = { "command": "add", "market": "BTC-LTC", "token": "LTC", "schedule": "*/5 * * * *" };
+            tokenCommand(data2.command, data2.market, data2.token, data2.schedule);
+        });
+    }
+
+    res.writeHead(statusCode, { 'Content-Type': 'text/plain' });
+    res.end();
+}
+
 //Method to log to splunk via.
-var logMode = "HTTP"; //Options are HTTP or File.
-var splunkLogDestination = "crypto";
+const logMode = "HTTP"; //Options are HTTP or File.
+const splunkLogDestination = "crypto";
 
 //https://support.bittrex.com/hc/en-us/articles/115003723911-Developer-s-Guide-API
 //Public APIs
@@ -30,9 +55,9 @@ var getorderhistory = site("/api/v1.1/account/getorderhistory?market=BTC-LTC");
 
 var tokenCollection = [];
 
-function tokenCommand(command, token, schedule) {
+function tokenCommand(command, market, token, schedule) {
     if (command === "add") {
-        let newToken = '{ "' + token + '": { "schedule": "' + schedule + '" } }';
+        let newToken = '{ "' + market + '": { "schedule": "' + schedule + '", "token": "' + token + '" } }';
         tokenCollection.push(newToken);
         console.log(tokenCollection);
     } else if (command === "remove") {
@@ -137,11 +162,13 @@ function fetchAPIAndLogData(apiRequest) {
 fetchAPIAndLogData(getticker);
 
 //To-Do (in order by priority):
-// -add token to monitor
-// -web hook listener to receive commands. such as buy, sell, add, increase monitoring tempo
-// -remove token from monitor
-// -tempo maintainer per token
-// -buy handler
-// -sell handler
-// -add slack intergration. but when should it trigger a slack notification for large price movement?
-// done-interject meta such as which token is the price data for into the json before its sent to splunk
+// 1-add token to monitor
+// 2-web hook listener to receive commands. such as buy, sell, add, increase monitoring tempo
+// 3-remove token from monitor
+// 4-tempo maintainer per token
+// 5-add check to see if token is already being monitored or has already been removed when using add/remove respectively
+// 6-buy handler
+// 7-sell handler
+// 8-add slack intergration. but when should it trigger a slack notification for large price movement?
+// done 0-map out the usable Bittrex APIs for the purposes of this project
+// done 0.5-interject meta such as which token is the price data for into the json before its sent to splunk
