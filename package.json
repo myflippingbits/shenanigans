@@ -1,0 +1,33 @@
+{
+    "name": "npmshenanigans",
+    "version": "1.0.0",
+    "description": "learning npm",
+    "main": "index.js",
+    "dependencies": {
+        "express": "^4.16.3",
+        "fs": "^0.0.1-security",
+        "jshint": "^2.9.5",
+        "multer": "^1.3.1",
+        "node-cron": "^1.2.1"
+    },
+    "devDependencies": {
+        "eslint": "^4.19.1",
+        "eslint-plugin-react": "^7.9.1"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/myflippingbits/shenanigans.git"
+    },
+    "keywords": [
+        "idk"
+    ],
+    "author": "dillon",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/myflippingbits/shenanigans/issues"
+    },
+    "homepage": "https://github.com/myflippingbits/shenanigans#readme"
+}
