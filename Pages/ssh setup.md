@@ -23,6 +23,7 @@ git clone git://github.com/username/your-repository
 Now cd to your git clone folder and do:
 ```
 git remote set-url origin git@github.com:username/your-repository.git
+git remote set-url origin ssh://git@github.com/username/repo-name.git
 ```
 Now try editing a file (try the README) and then do:
 
