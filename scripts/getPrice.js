@@ -7,6 +7,8 @@ const statusCode = 200;
 
 app.listen(9001);
 
+
+//Server and Trading Bot API handler for recieved API requests.
 function handler(req, res) {
     var data = '';
 
@@ -18,7 +20,7 @@ function handler(req, res) {
         req.on('end', function() {
             console.log('Received body data:', data.toString());
             //data parsing to run commands let data = JSON.parse(data);
-            let data2 = { "command": "add", "market": "BTC-LTC", "token": "LTC", "schedule": "*/5 * * * *" };
+            let data2 = { "command": "add", "market": "BTC-LTC", "token": "LTC", "schedule": "*/5 * * * *" }; // this line is for testing/example only and will be removed.
             tokenCommand(data2.command, data2.market, data2.token, data2.schedule);
         });
     }
@@ -31,7 +33,7 @@ function handler(req, res) {
 const logMode = "HTTP"; //Options are HTTP or File.
 const splunkLogDestination = "crypto";
 
-//https://support.bittrex.com/hc/en-us/articles/115003723911-Developer-s-Guide-API
+//DOCS: https://support.bittrex.com/hc/en-us/articles/115003723911-Developer-s-Guide-API
 //Public APIs
 var getmarkets = site("/api/v1.1/public/getmarkets"); //no args
 var getcurrencies = site("/api/v1.1/public/getcurrencies"); //no args
@@ -55,6 +57,7 @@ var getorderhistory = site("/api/v1.1/account/getorderhistory?market=BTC-LTC");
 
 var tokenCollection = [];
 
+//Trading Bot API request parser/processor.
 function tokenCommand(command, market, token, schedule) {
     if (command === "add") {
         let newToken = '{ "' + market + '": { "schedule": "' + schedule + '", "token": "' + token + '" } }';
@@ -87,6 +90,7 @@ function tokenCommand(command, market, token, schedule) {
     }
 }
 
+//Formatter to consume BITTREX API.
 function site(uri, hasOptions, market, apiKey, uuid, type, quantity, rate, currency) {
     data = {};
     data.api = uri.split("/").slice(-1).toString();
@@ -138,6 +142,7 @@ function site(uri, hasOptions, market, apiKey, uuid, type, quantity, rate, curre
     return data;
 }
 
+//Consume BITTREX API response and log to Splunk.
 function fetchAPIAndLogData(apiRequest) {
     https.request(apiRequest.options, function(res) {
         let body = "";
