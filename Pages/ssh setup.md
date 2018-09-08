@@ -1,34 +1,47 @@
-Create a repo.
+# Create a Repo
+
 Make sure there is at least one file in it (even just the README)
+
 Generate ssh key:
 ```
+
 ssh-keygen -t rsa -C "your_email@example.com"
 ```
+
 Copy the contents of the file ~/.ssh/id_rsa.pub to your SSH keys in your GitHub account settings.
 
 start agent
 ```
+
 eval $(ssh-agent)
 
-add your keys
+Add your keys
 ```
+
 ssh-add ~/.ssh/id_rsa
+
 
 Test SSH key:
 ```
+
 ssh -T git@github.com
+
+
 clone the repo:
-git clone git://github.com/username/your-repository
 ```
+git clone git://github.com/username/your-repository
+
+
 Now cd to your git clone folder and do:
 ```
+
 git remote set-url origin git@github.com:username/your-repository.git
 git remote set-url origin ssh://git@github.com/username/repo-name.git
-```
-Now try editing a file (try the README) and then do:
 
+
+Now try editing a file (try the README) and then do:
 ```
+
 git add -A
 git commit -am "my update msg"
 git push
-```
