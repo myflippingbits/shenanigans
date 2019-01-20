@@ -6,7 +6,7 @@ var file_date = Date().toLocaleString().slice(4, 21).replace(/\s|:/g, "_");
 //http://dev.splunk.com/view/event-collector/SP-CAAAE6P
 //Data format example
 // {
-//     "time": 1426279439, // epoch time
+//     "time": 1426279439, // epoch time if not specified its ingest time.
 //     "host": "localhost",
 //     "source": "SplunkLogger",
 //     "index": "main",
