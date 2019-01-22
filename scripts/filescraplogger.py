@@ -1,19 +1,23 @@
-import argparse, json, time, os, backports.os
+# coding: utf8
+import argparse, json, time, os
 
 """
+sample output:
 {"timestamp":1544139712113,
     "drive":"E",
     "folder":"E:\\Movies\\A",
-    "filePath":"E:\\Movies\\A\\Avengers Infinity War (2018) x265 AC3 6ch 2160p, 3840x1608, 4 567 Kbps.mkv",
-    "file":"Avengers Infinity War (2018) x265 AC3 6ch 2160p, 3840x1608, 4 567 Kbps.mkv",
-    "size":5115839113,
-    "created":1538928289076.3435,
-    "accessed":1533161368187.5266,
-    "modified":1533161354199.2502
+    "filePath":"E:\\Movies\\A\\A Movie Name (2019) x265 AC3 6ch 2160p, 3840x2160, 4 500 Kbps.mkv",
+    "file":"A Movie Name (2019) x265 AC3 6ch 2160p, 3840x2160, 4 500 Kbps.mkv",
+    "size":5151515151,
+    "created":1511111111111.1234,
+    "accessed":1511111111112.1234,
+    "modified":1511111111113.1234
 }
 """
 
-default_dirs = ["E:\\Movies", "E:\\Movies2"] #Add any directories you want scanned by default
+default_dirs = [] #Add any directories you want scanned by default, then comment out the next two lines.
+default_config_file = open(os.path.join(os.getcwd(),"config.json"), "r").read() #See the config.json file to change the directories to be monitored.
+default_dirs = json.loads(default_config_file)["monitored_directories"]
 default_save = os.path.join(os.getcwd(),"parsed_files.json")
 #default_save = "" #uncomment this line to override current working directory as default
 
@@ -48,9 +52,10 @@ for top in args.directories:
                     blob['created'] = os.stat(os.path.join(root,file)).st_ctime*1000
                     blob['accessed'] = os.stat(os.path.join(root,file)).st_atime*1000
                     blob['modified'] = os.stat(os.path.join(root,file)).st_mtime*1000
+                    print(json.dumps(blob, ensure_ascii=False, encoding="utf-8") + "\n")
                     #write blob to file
-                    with open(args.savedir, 'a') as out_file:
-                        out_file.write(json.dumps(blob, ensure_ascii=False) + "\n")
+                    #with open(args.savedir, 'a') as out_file:
+                    #    out_file.write(json.dumps(blob, ensure_ascii=False, encoding="utf-8") + "\n")
                 except Exception as e:
                     print("There was an error with %s:\n%s"%(blob,e))
 
