@@ -1,2 +1,3 @@
 # shenanigans
- a place to document my shenanigans
+
+ A place to document my shenanigans.
