@@ -2,7 +2,7 @@
     "name": "npmshenanigans",
     "version": "1.0.0",
     "description": "learning npm",
-    "main": "index.js",
+    "main": "scripts/web_server.js",
     "dependencies": {
         "express": "^4.16.3",
         "fs": "^0.0.1-security",
@@ -11,11 +11,10 @@
         "node-cron": "^1.2.1"
     },
     "devDependencies": {
-        "eslint": "^4.19.1",
-        "eslint-plugin-react": "^7.9.1"
+        "eslint": "^4.19.1"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node scripts/webhook_listener.js"
     },
     "repository": {
         "type": "git",
@@ -24,7 +23,7 @@
     "keywords": [
         "idk"
     ],
-    "author": "bitflipper9000",
+    "author": "dontflipmybits",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/myflippingbits/shenanigans/issues"
